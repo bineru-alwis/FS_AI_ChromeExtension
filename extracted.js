@@ -9,14 +9,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const claimDetails = `
     Claim Number: ${params.get("claimNumber") || "N/A"}
-    Claimant: ${params.get("claimant") || "N/A"}
-    Claim Owner: ${params.get("claimOwner") || "N/A"}
-    Claim Type: ${params.get("claimType") || "N/A"}
-    Status: ${params.get("claimStatus") || "N/A"}
-    Claim Age: ${params.get("claimAge") || "N/A"}
+    consignmentNote: ${params.get("consignmentNote") || "N/A"}
+    claimantName: ${params.get("claimantName") || "N/A"}
+    claimantContact: ${params.get("claimantContact") || "N/A"}
+    claimantEmail: ${params.get("claimantEmail") || "N/A"}
+    claimantPhone: ${params.get("claimantPhone") || "N/A"}
+    claimantEmail: ${params.get("claimValue") || "N/A"}
+    claimantPhone: ${params.get("gstIncluded") || "N/A"}
+    claimValue: ${params.get("receiverName") || "N/A"}
+    gstIncluded: ${params.get("claimNature") || "N/A"}
+    claimantPhone: ${params.get("claimPhase") || "N/A"}
+    claimValue: ${params.get("claimStatus") || "N/A"}
     `;
 
     console.log("Parsed Claim Details:", claimDetails); // Debugging
 
     document.getElementById("claimDetails").textContent = claimDetails;
 });
+
+
+
+/*
+                        claimNumber,
+                        consignmentNote,
+                        claimantName,
+                        claimantContact,
+                        claimantEmail,
+                        claimantPhone,
+                        claimValue,
+                        gstIncluded,
+                        receiverName,
+                        claimNature,
+                        claimPhase,
+                        claimStatus 
+*/
