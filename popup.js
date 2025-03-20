@@ -1,27 +1,64 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const extractButton = document.getElementById("extract");
     const sendButton = document.getElementById("send");
     const promptInput = document.getElementById("prompt");
     const responseDiv = document.getElementById("response");
+    const extractButton = document.getElementById("extract");
 
-    // Extract content from the current tab
-    extractButton.addEventListener("click", function () {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            chrome.tabs.sendMessage(tabs[0].id, { action: "extract_text" }, (response) => {
-                if (response && response.text) {
-                    promptInput.value = response.text;
-                } else {
-                    promptInput.value = "Failed to extract content!";
-                }
+        /*const extractButton = document.getElementById("extract");*/
+        const resultArea = document.getElementById("prompt");
+    
+        extractButton.addEventListener("click", function () {
+            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                console.log("Requesting claim details extraction...");
+                chrome.tabs.sendMessage(tabs[0].id, { action: "extract_claim_details" }, (response) => {
+                    console.log("Extracted Claim Details:", response);
+                    
+                    if (chrome.runtime.lastError) {
+                        console.error("Error:", chrome.runtime.lastError.message);
+                        alert("Error: " + chrome.runtime.lastError.message);
+                    } else if (response && !response.error) {
+                        if (!response.claimNumber) {
+                            console.error("Response does not contain valid claim details!", response);
+                            alert("Failed to extract valid claim details!");
+                            return;
+                        }
+        
+                        // Convert extracted details into a query string
+                        const queryParams = new URLSearchParams({
+                            claimNumber: response.claimNumber || "N/A",
+                            claimant: response.claimant || "N/A",
+                            claimOwner: response.claimOwner || "N/A",
+                            claimType: response.claimType || "N/A",
+                            claimStatus: response.claimStatus || "N/A",
+                            claimAge: response.claimAge || "N/A"
+                        }).toString();
+        
+                        console.log("Opening extracted.html with:", queryParams);
+        
+                        // Open a new window with extracted details
+                        chrome.windows.create({
+                            url: chrome.runtime.getURL(`extracted.html?${queryParams}`),
+                            type: "popup",
+                            width: 500,
+                            height: 400
+                        });
+                    } else {
+                        alert("Failed to extract claim details!");
+                    }
+                });
             });
         });
-    });
 
-    // Send extracted content to LM Studio AI
+    
+    
+    
+    
+    
+    
     sendButton.addEventListener("click", async function () {
         const prompt = promptInput.value.trim();
         if (!prompt) {
-            responseDiv.innerHTML = "<p style='color:red;'>No content to send!</p>";
+            responseDiv.innerHTML = "<p style='color:red;'>Please enter a prompt!</p>";
             return;
         }
 
@@ -34,9 +71,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    model: "llama-3.2-1b-instruct",
-                    messages: [{ role: "user", content: prompt }],
-                    max_tokens: 150
+                    model: "llama-3.2-1b-instruct",  // Replace with your active model name in LM Studio
+                    messages: [
+                        { "role": "system", "content": "You are a Freight claims assessor. All replies should like a Freight claims assessor." },
+                        { role: "user", content: prompt }],
+                    max_tokens: 1000
                 })
             });
 

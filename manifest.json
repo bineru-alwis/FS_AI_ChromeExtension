@@ -5,6 +5,8 @@
   "description": "Extract webpage content and send to LM Studio AI",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["http://127.0.0.1:1234/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"},
   "action": {
     "default_popup": "popup.html"
   },
