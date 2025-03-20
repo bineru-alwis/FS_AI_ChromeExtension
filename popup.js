@@ -20,8 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: JSON.stringify({
                     model: "llama-3.2-1b-instruct",  // Replace with your active model name in LM Studio
-                    messages: [{ role: "user", content: prompt }],
-                    max_tokens: 100
+                    messages: [
+                        { "role": "system", "content": "You are a Freight claims assessor. All replies should like a Freight claims assessor." },
+                        { role: "user", content: prompt }],
+                    max_tokens: 1000
                 })
             });
 
