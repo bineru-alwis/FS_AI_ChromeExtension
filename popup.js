@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             width: 500,
                             height: 400
                         });
+                        window.close();
                     } else {
                         alert("Failed to extract claim details!");
                     }
