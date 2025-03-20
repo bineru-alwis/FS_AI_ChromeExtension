@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         responseDiv.innerHTML = "<p>Loading...</p>";
 
         try {
-            const res = await fetch("http://localhost:1234/v1/chat/completions", {
+            const res = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -36,3 +36,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+/*
+//llama-3.2-1b-instruct curl
+
+curl http://localhost:1234/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama-3.2-1b-instruct",
+    "messages": [
+      { "role": "system", "content": "Always answer in rhymes. Today is Thursday" },
+      { "role": "user", "content": "What day is it today?" }
+    ],
+    "temperature": 0.7,
+    "max_tokens": -1,
+    "stream": false
+}'
+*/
