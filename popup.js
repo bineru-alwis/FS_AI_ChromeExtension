@@ -1,12 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const extractButton = document.getElementById("extract");
     const sendButton = document.getElementById("send");
     const promptInput = document.getElementById("prompt");
     const responseDiv = document.getElementById("response");
 
+    // Extract content from the current tab
+    extractButton.addEventListener("click", function () {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id, { action: "extract_text" }, (response) => {
+                if (response && response.text) {
+                    promptInput.value = response.text;
+                } else {
+                    promptInput.value = "Failed to extract content!";
+                }
+            });
+        });
+    });
+
+    // Send extracted content to LM Studio AI
     sendButton.addEventListener("click", async function () {
         const prompt = promptInput.value.trim();
         if (!prompt) {
-            responseDiv.innerHTML = "<p style='color:red;'>Please enter a prompt!</p>";
+            responseDiv.innerHTML = "<p style='color:red;'>No content to send!</p>";
             return;
         }
 
@@ -19,11 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    model: "llama-3.2-1b-instruct",  // Replace with your active model name in LM Studio
-                    messages: [
-                        { "role": "system", "content": "You are a Freight claims assessor. All replies should like a Freight claims assessor." },
-                        { role: "user", content: prompt }],
-                    max_tokens: 1000
+                    model: "llama-3.2-1b-instruct",
+                    messages: [{ role: "user", content: prompt }],
+                    max_tokens: 150
                 })
             });
 
