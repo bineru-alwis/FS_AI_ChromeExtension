@@ -23,14 +23,36 @@ document.addEventListener("DOMContentLoaded", function () {
                             return;
                         }
         
+                        /*
+                        claimNumber,
+                        consignmentNote,
+                        claimantName,
+                        claimantContact,
+                        claimantEmail,
+                        claimantPhone,
+                        claimValue,
+                        gstIncluded,
+                        receiverName,
+                        claimNature,
+                        claimPhase,
+                        claimStatus 
+                        */
+
+
                         // Convert extracted details into a query string
                         const queryParams = new URLSearchParams({
                             claimNumber: response.claimNumber || "N/A",
-                            claimant: response.claimant || "N/A",
-                            claimOwner: response.claimOwner || "N/A",
-                            claimType: response.claimType || "N/A",
-                            claimStatus: response.claimStatus || "N/A",
-                            claimAge: response.claimAge || "N/A"
+                            consignmentNote: response.consignmentNote || "N/A",
+                            claimantName: response.claimantName || "N/A",
+                            claimantContact: response.claimantContact || "N/A",
+                            claimantEmail: response.claimantEmail || "N/A",
+                            claimantPhone: response.claimantPhone || "N/A",
+                            claimValue: response.claimValue || "N/A",
+                            gstIncluded: response.gstIncluded || "N/A",
+                            receiverName: response.receiverName || "N/A",
+                            claimNature: response.claimNature || "N/A",
+                            claimPhase: response.claimPhase || "N/A",
+                            claimStatus: response.claimStatus || "N/A"
                         }).toString();
         
                         console.log("Opening extracted.html with:", queryParams);
@@ -42,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             width: 500,
                             height: 400
                         });
+                        window.close();
                     } else {
                         alert("Failed to extract claim details!");
                     }
