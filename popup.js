@@ -22,22 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             alert("Failed to extract valid claim details!");
                             return;
                         }
-        
-                        /*
-                        claimNumber,
-                        consignmentNote,
-                        claimantName,
-                        claimantContact,
-                        claimantEmail,
-                        claimantPhone,
-                        claimValue,
-                        gstIncluded,
-                        receiverName,
-                        claimNature,
-                        claimPhase,
-                        claimStatus 
-                        */
-
 
                         // Convert extracted details into a query string
                         const queryParams = new URLSearchParams({
@@ -52,7 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             receiverName: response.receiverName || "N/A",
                             claimNature: response.claimNature || "N/A",
                             claimPhase: response.claimPhase || "N/A",
-                            claimStatus: response.claimStatus || "N/A"
+                            claimStatus: response.claimStatus || "N/A",
+                            claimOwner : response.claimOwner || "N/A",
+                            claimAge: response.claimAge || "N/A"
                         }).toString();
         
                         console.log("Opening extracted.html with:", queryParams);
@@ -72,12 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-    
-    
-    
-    
-    
-    
     sendButton.addEventListener("click", async function () {
         const prompt = promptInput.value.trim();
         if (!prompt) {
